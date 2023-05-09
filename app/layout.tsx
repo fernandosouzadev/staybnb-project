@@ -1,6 +1,8 @@
 import './globals.css'
 import { Nunito } from 'next/font/google'
 import { Navbar } from './components/Navbar/Navbar'
+import { ReduxProvider } from '@/app/redux/Provider'
+import { ToasterProvider } from './providers/ToasterProvider'
 
 const font = Nunito({ subsets: ['latin'] })
 
@@ -17,8 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-        <Navbar />
-        {children}
+        <ReduxProvider>
+          <ToasterProvider />
+          <Navbar />
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   )
