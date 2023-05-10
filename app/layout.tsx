@@ -1,7 +1,7 @@
 import './globals.css'
 import { Nunito } from 'next/font/google'
 import { Navbar } from './components/Navbar/Navbar'
-import { ReduxProvider } from '@/app/redux/Provider'
+import { ReduxProvider } from '@/app/providers/ReduxProvider'
 import { ToasterProvider } from './providers/ToasterProvider'
 
 const font = Nunito({ subsets: ['latin'] })
