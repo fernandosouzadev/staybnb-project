@@ -11,8 +11,8 @@ export const registerModalSlice = createSlice({
   name: 'registerModal',
   initialState,
   reducers: {
-    status: (state, action) => {
-      if (action.type === 'registerModal/status') {
+    setStatusRegisterModal: (state, action) => {
+      if (action.type === 'registerModal/setStatusRegisterModal') {
         state.isOpen = action.payload
       }
       return state
@@ -20,5 +20,5 @@ export const registerModalSlice = createSlice({
   },
 })
 
-export const { status } = registerModalSlice.actions
+export const { setStatusRegisterModal } = registerModalSlice.actions
 export default registerModalSlice.reducer
