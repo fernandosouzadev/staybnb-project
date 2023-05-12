@@ -1,11 +1,15 @@
 import Image from 'next/image'
 
-export function Avatar() {
+interface AvatarProps {
+  src: string | null | undefined
+}
+
+export function Avatar({ src }: AvatarProps) {
   return (
     <Image
       className=" rounded-full"
       alt="Avatar"
-      src="/images/placeholder.jpg"
+      src={src || '/images/placeholder.jpg'}
       height="30"
       width="30"
     ></Image>
