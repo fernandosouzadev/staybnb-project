@@ -1,11 +1,20 @@
 'use client'
 
+import { setCurrentUser } from '@/app/redux/currentUser/slice'
+import { useAppDispatch } from '@/app/redux/hooks'
+import { User } from '@prisma/client'
 import { Container } from '../Container'
 import { Logo } from './Logo'
 import { Search } from './Search'
 import { UserMenu } from './UserMenu'
 
-export function Navbar() {
+interface NavbarProps {
+  user: User | null
+}
+
+export function Navbar({ user }: NavbarProps) {
+  const dispatch = useAppDispatch()
+  dispatch(setCurrentUser(user))
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
       <div
