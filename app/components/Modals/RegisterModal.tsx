@@ -6,20 +6,27 @@ import { FcGoogle } from 'react-icons/fc'
 import { useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
-import { closeRegisterModal } from '@/app/redux/registerModal/actions'
 import { Modal } from './Modal'
 import { Heading } from '../Heding'
 import { Input } from '../Inputs/Input'
 import { toast } from 'react-hot-toast'
 import { Button } from '../Button'
+import { setStatusRegisterModal } from '@/app/redux/registerModal/slice'
+import { setStatusLoginModal } from '@/app/redux/loginModal/slice'
+import { signIn } from 'next-auth/react'
 
 export function RegisterModal() {
   const [isLoading, setIsLoading] = useState(false)
   const { isOpen } = useAppSelector((state) => state.registerModalReducer)
   const dispatch = useAppDispatch()
   function handleCloseModal() {
-    dispatch(closeRegisterModal())
+    dispatch(setStatusRegisterModal(false))
   }
+  function handleModalRegister() {
+    handleCloseModal()
+    dispatch(setStatusLoginModal(true))
+  }
+
   const {
     register,
     handleSubmit,
@@ -87,17 +94,20 @@ export function RegisterModal() {
         outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => {}}
+        onClick={() => signIn('google')}
       />
       <Button
         outline
         label="Continue with Github"
         icon={AiFillGithub}
-        onClick={() => {}}
+        onClick={() => signIn('github')}
       />
       <div className="flex flex-row items-center justify-center gap-2">
         <div>Already havean account?</div>
-        <div className="text-neutral-800 cursor-pointer hover:underline">
+        <div
+          onClick={handleModalRegister}
+          className="text-neutral-800 cursor-pointer hover:underline"
+        >
           Log In
         </div>
       </div>
