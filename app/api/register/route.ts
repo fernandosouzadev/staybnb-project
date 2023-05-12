@@ -9,7 +9,6 @@ export async function POST(request: Request) {
   const { email, name, password } = body
 
   const hashedPassword = await bcrypt.hash(password, 12)
-  console.log(email, name, password)
   const user = await prisma.user.create({
     data: {
       email,
