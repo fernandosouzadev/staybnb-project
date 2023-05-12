@@ -23,7 +23,6 @@ export function Button({
   iconColor,
 }: ButtonProps) {
   const [mouseMoveOnButton, setMouseMoveOnButton] = useState({ x: 0, y: 0 })
-  console.log(mouseMoveOnButton)
   return (
     <button
       onClick={onClick}
