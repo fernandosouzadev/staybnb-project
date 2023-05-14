@@ -20,9 +20,7 @@ export function LoginModal() {
   const router = useRouter()
   const { isOpen } = useAppSelector((state) => state.loginModalReducer)
   const dispatch = useAppDispatch()
-  function handleCloseModal() {
-    dispatch(setStatusLoginModal(false))
-  }
+
   const {
     register,
     handleSubmit,
@@ -34,10 +32,10 @@ export function LoginModal() {
     },
   })
 
-  function handleModalRegister() {
-    handleCloseModal()
+  const handleModalRegister = useCallback(() => {
+    dispatch(setStatusLoginModal(false))
     dispatch(setStatusRegisterModal(true))
-  }
+  }, [dispatch])
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true)
@@ -50,7 +48,7 @@ export function LoginModal() {
       if (callback?.ok) {
         toast.success('Logged in success!')
         router.refresh()
-        handleCloseModal()
+        dispatch(setStatusLoginModal(false))
       }
 
       if (callback?.error) {
@@ -109,7 +107,7 @@ export function LoginModal() {
           onClick={handleModalRegister}
           className="text-neutral-800 cursor-pointer hover:underline"
         >
-          Register
+          Create an account
         </div>
       </div>
     </div>
@@ -119,7 +117,7 @@ export function LoginModal() {
       isOpen={isOpen}
       disabled={isLoading}
       title="Login"
-      onClose={handleCloseModal}
+      onClose={() => dispatch(setStatusLoginModal(false))}
       secondaryActionLabel="Cancel"
       actionlabel="Continue"
       onSubmit={handleSubmit(onSubmit)}
