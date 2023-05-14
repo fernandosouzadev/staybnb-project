@@ -19,13 +19,11 @@ export function RegisterModal() {
   const [isLoading, setIsLoading] = useState(false)
   const { isOpen } = useAppSelector((state) => state.registerModalReducer)
   const dispatch = useAppDispatch()
-  function handleCloseModal() {
+
+  const handleModalLogin = useCallback(() => {
     dispatch(setStatusRegisterModal(false))
-  }
-  function handleModalRegister() {
-    handleCloseModal()
     dispatch(setStatusLoginModal(true))
-  }
+  }, [dispatch])
 
   const {
     register,
@@ -44,7 +42,7 @@ export function RegisterModal() {
     axios
       .post('/api/register', data)
       .then(() => {
-        handleCloseModal()
+        dispatch(setStatusRegisterModal(false))
       })
       .catch((error) => toast.error('Something went wrong'))
       .finally(() => setIsLoading(false))
@@ -105,7 +103,7 @@ export function RegisterModal() {
       <div className="flex flex-row items-center justify-center gap-2">
         <div>Already havean account?</div>
         <div
-          onClick={handleModalRegister}
+          onClick={handleModalLogin}
           className="text-neutral-800 cursor-pointer hover:underline"
         >
           Log In
@@ -118,7 +116,7 @@ export function RegisterModal() {
       isOpen={isOpen}
       disabled={isLoading}
       title="Register"
-      onClose={handleCloseModal}
+      onClose={() => dispatch(setStatusRegisterModal(false))}
       secondaryActionLabel="Cancel"
       actionlabel="Continue"
       onSubmit={handleSubmit(onSubmit)}
