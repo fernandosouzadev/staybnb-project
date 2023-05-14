@@ -4,6 +4,7 @@ import { setCurrentUser } from '@/app/redux/currentUser/slice'
 import { useAppDispatch } from '@/app/redux/hooks'
 import { User } from '@prisma/client'
 import { Container } from '../Container'
+import { Categories } from './Categories'
 import { Logo } from './Logo'
 import { Search } from './Search'
 import { UserMenu } from './UserMenu'
@@ -31,6 +32,7 @@ export function Navbar({ user }: NavbarProps) {
           </div>
         </Container>
       </div>
+      <Categories />
     </div>
   )
 }
