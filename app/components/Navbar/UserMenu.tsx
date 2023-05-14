@@ -3,6 +3,7 @@
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
 import { setStatusLoginModal } from '@/app/redux/loginModal/slice'
 import { setStatusRegisterModal } from '@/app/redux/registerModal/slice'
+import { setStatusRentModal } from '@/app/redux/rentModal/slice'
 import { signOut } from 'next-auth/react'
 import { useCallback, useRef, useState } from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
@@ -10,6 +11,7 @@ import { useClickAway } from 'react-use'
 import { Avatar } from '../Avatar'
 import { LoginModal } from '../Modals/LoginModal'
 import { RegisterModal } from '../Modals/RegisterModal'
+import { RentModal } from '../Modals/RentModal'
 import { MenuItem } from './MenuItem'
 
 export function UserMenu() {
@@ -38,15 +40,24 @@ export function UserMenu() {
     }
   })
 
+  const onRent = useCallback(() => {
+    if (!currentUser) {
+      return dispatch(setStatusLoginModal(true))
+    }
+    dispatch(setStatusRentModal(true))
+  }, [currentUser, dispatch])
+
   return (
     <>
       <RegisterModal />
       <LoginModal />
+      <RentModal />
       <div className="relative" ref={userMenuRef}>
         <div className="flex flex-row items-center gap-3">
           <div
             onClick={() => {
               setIsOpen(false)
+              onRent()
             }}
             className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
           >
@@ -71,7 +82,7 @@ export function UserMenu() {
                   <MenuItem label="My Favorites" onClick={() => {}} />
                   <MenuItem label="My reservations" onClick={() => {}} />
                   <MenuItem label="My properties" onClick={() => {}} />
-                  <MenuItem label="Airbnb my home" onClick={() => {}} />
+                  <MenuItem label="Airbnb my home" onClick={() => onRent()} />
                   <hr />
                   <MenuItem label="Logout" onClick={() => signOut()} />
                 </>
