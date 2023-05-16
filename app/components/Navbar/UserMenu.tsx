@@ -5,6 +5,7 @@ import { setStatusLoginModal } from '@/app/redux/loginModal/slice'
 import { setStatusRegisterModal } from '@/app/redux/registerModal/slice'
 import { setStatusRentModal } from '@/app/redux/rentModal/slice'
 import { signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { useCallback, useRef, useState } from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { useClickAway } from 'react-use'
@@ -17,6 +18,7 @@ import { MenuItem } from './MenuItem'
 export function UserMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const userMenuRef = useRef(null)
+  const router = useRouter()
 
   const toggleOpen = useCallback(() => {
     setIsOpen((state) => !state)
@@ -78,10 +80,22 @@ export function UserMenu() {
             <div className="flex flex-col cursor-pointer">
               {currentUser ? (
                 <>
-                  <MenuItem label="My trips" onClick={() => {}} />
-                  <MenuItem label="My Favorites" onClick={() => {}} />
-                  <MenuItem label="My reservations" onClick={() => {}} />
-                  <MenuItem label="My properties" onClick={() => {}} />
+                  <MenuItem
+                    label="My trips"
+                    onClick={() => router.push('/trips')}
+                  />
+                  <MenuItem
+                    label="My Favorites"
+                    onClick={() => router.push('/favorites')}
+                  />
+                  <MenuItem
+                    label="My reservations"
+                    onClick={() => router.push('/reservations')}
+                  />
+                  <MenuItem
+                    label="My properties"
+                    onClick={() => router.push('/properties')}
+                  />
                   <MenuItem label="Airbnb my home" onClick={() => onRent()} />
                   <hr />
                   <MenuItem label="Logout" onClick={() => signOut()} />
