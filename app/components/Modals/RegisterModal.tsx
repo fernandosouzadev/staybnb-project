@@ -42,7 +42,9 @@ export function RegisterModal() {
     axios
       .post('/api/register', data)
       .then(() => {
+        toast.success('Account registered successfully')
         dispatch(setStatusRegisterModal(false))
+        dispatch(setStatusLoginModal(true))
       })
       .catch((error) => toast.error('Something went wrong'))
       .finally(() => setIsLoading(false))
