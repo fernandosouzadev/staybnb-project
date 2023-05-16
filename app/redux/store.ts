@@ -4,6 +4,7 @@ import registerModalReducer from './registerModal/slice'
 import loginModalReducer from './loginModal/slice'
 import currentUserReducer from './currentUser/slice'
 import rentModalReducer from './rentModal/slice'
+import searchModalReducer from './searchModal/slice'
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     loginModalReducer,
     currentUserReducer,
     rentModalReducer,
+    searchModalReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: [logger],
