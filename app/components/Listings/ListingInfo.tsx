@@ -18,7 +18,7 @@ interface ListingInfoProps {
     | undefined
   description: string
   roomCount: number
-  guessCount: number
+  guestCount: number
   bathroomCount: number
   locationValue: string
 }
@@ -28,7 +28,7 @@ export function ListingInfo({
   category,
   bathroomCount,
   description,
-  guessCount,
+  guestCount,
   locationValue,
   roomCount,
 }: ListingInfoProps) {
@@ -42,7 +42,7 @@ export function ListingInfo({
           <Avatar src={user?.image} />
         </div>
         <div className="flex flex-row items-center gap-4 font-light text-neutral-500">
-          <div>{guessCount} guests</div>
+          <div>{guestCount} guests</div>
           <div>{roomCount} rooms</div>
           <div>{bathroomCount} bathrooms</div>
         </div>
