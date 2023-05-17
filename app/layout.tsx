@@ -9,8 +9,11 @@ import { Footer } from './components/Footer/Footer'
 const font = Nunito({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Airbnb',
-  description: 'Airbnb new concept',
+  title: 'Airbnb - Discover Your Home Away from Home',
+  description: 'Airbnb clone - new concept',
+  icons: {
+    icon: '/images/favicon.png',
+  },
 }
 
 export default async function RootLayout({
