@@ -6,9 +6,7 @@ import * as animationData from '../../public/lottie/airplane-around-the-world.js
 export function Loader() {
   return (
     <div className="h-[70vh] flex flex-col justify-center items-center">
-      <div className="w-10 h-10">
-        <Lottie animationData={animationData} />
-      </div>
+      <Lottie animationData={animationData} />
     </div>
   )
 }
