@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback } from 'react'
-import { AiOutlinePlus } from 'react-icons/ai'
+import { AiOutlineMinusCircle, AiOutlinePlus } from 'react-icons/ai'
 
 interface CounterProps {
   title: string
@@ -34,7 +34,7 @@ export function Counter({ title, subtitle, value, onChange }: CounterProps) {
           onClick={onReduce}
           className="w-10 h-10 roundend-full border-[1px] border-neutral-400 flex items-center justify-center text-neutral-600 cursor-pointer hover:opacity-80 transition"
         >
-          <AiOutlinePlus />
+          <AiOutlineMinusCircle />
         </div>
         <div className="font-light text-xl text-neutral-600">{value}</div>
         <div
