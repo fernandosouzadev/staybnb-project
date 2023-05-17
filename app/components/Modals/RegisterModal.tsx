@@ -85,13 +85,6 @@ export function RegisterModal() {
       <hr />
       <Button
         outline
-        label="Continue with Facebook"
-        icon={AiFillFacebook}
-        iconColor="#3b5998"
-        onClick={() => {}}
-      />
-      <Button
-        outline
         label="Continue with Google"
         icon={FcGoogle}
         onClick={() => signIn('google')}
