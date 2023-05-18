@@ -73,7 +73,7 @@ export function MessagesList({ initialMessages = [] }: MessagesListProps) {
       {messages.map((messageItem) => (
         <MessageBox key={messageItem.id} data={messageItem} />
       ))}
-      <div className="pt-2" ref={bottomRef} />
+      <div className="pt-24" ref={bottomRef} />
     </div>
   )
 }
