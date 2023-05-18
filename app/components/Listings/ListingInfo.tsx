@@ -1,9 +1,12 @@
 'use client'
 
 import useCountries from '@/app/hooks/useContries'
+import { useAppDispatch } from '@/app/redux/hooks'
+import { setStatusMessageModal } from '@/app/redux/messageModal/slice'
 import { User } from '@prisma/client'
 import { IconType } from 'react-icons'
 import { Avatar } from '../Avatar'
+import { Button } from '../Button'
 import Map from '../Map'
 import { ListingCategory } from './ListingCategory'
 
@@ -32,6 +35,7 @@ export function ListingInfo({
   locationValue,
   roomCount,
 }: ListingInfoProps) {
+  const dispatch = useAppDispatch()
   const { getByValue } = useCountries()
   const coordinates = getByValue(locationValue)?.latlng
   return (
@@ -57,6 +61,11 @@ export function ListingInfo({
       )}
       <hr />
       <div className="text-lg font-light text-neutral-500">{description}</div>
+      <Button
+        label="Message Host"
+        onClick={() => dispatch(setStatusMessageModal(true))}
+        outline
+      />
       <hr />
       <Map center={coordinates} />
     </div>

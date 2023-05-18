@@ -7,11 +7,11 @@ import { Button } from '../Button'
 interface ModalProps {
   isOpen?: boolean
   onClose: () => void
-  onSubmit: () => void
+  onSubmit?: () => void
   title?: string
   body?: ReactElement
   footer?: ReactElement
-  actionlabel: string
+  actionlabel?: string
   disabled?: boolean
   secondaryAction?: () => void
   secondaryActionLabel?: string
@@ -50,7 +50,9 @@ export function Modal({
     if (disabled) {
       return
     }
-    onSubmit()
+    if (onSubmit) {
+      onSubmit()
+    }
   }, [onSubmit, disabled])
 
   const handleSecondaryAction = useCallback(() => {
@@ -94,11 +96,13 @@ export function Modal({
                       outline
                     />
                   )}
-                  <Button
-                    label={actionlabel}
-                    disabled={disabled}
-                    onClick={handleSubmit}
-                  />
+                  {actionlabel && (
+                    <Button
+                      label={actionlabel}
+                      disabled={disabled}
+                      onClick={handleSubmit}
+                    />
+                  )}
                 </div>
                 {footer}
               </div>

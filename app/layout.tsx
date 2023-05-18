@@ -5,6 +5,7 @@ import { ReduxProvider } from '@/app/providers/ReduxProvider'
 import { ToasterProvider } from './providers/ToasterProvider'
 import getCurrentUser from './actions/getCurrentUser'
 import { Footer } from './components/Footer/Footer'
+import ClientSessionProvider from './providers/ClientSessionProvider'
 
 const font = Nunito({ subsets: ['latin'] })
 
@@ -27,9 +28,12 @@ export default async function RootLayout({
       <body className={font.className}>
         <ReduxProvider>
           <ToasterProvider />
-          <Navbar user={user} />
-          <div className="pb-20 pt-20">{children}</div>
-          <Footer />
+          <div className="flex flex-col min-h-screen">
+            <ClientSessionProvider>
+              <Navbar user={user} />
+              <div className="flex-grow pt-20">{children}</div>
+            </ClientSessionProvider>
+          </div>
         </ReduxProvider>
       </body>
     </html>

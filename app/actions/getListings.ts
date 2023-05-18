@@ -35,7 +35,6 @@ export default async function getListings(params: IListingsParams) {
     }
 
     if (locationValue) {
-      console.log()
       query.locationValue = locationValue
     }
 

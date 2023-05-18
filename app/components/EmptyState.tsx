@@ -8,12 +8,14 @@ interface EmptyStateProps {
   title?: string
   subtitle?: string
   showReset?: boolean
+  actionLabel?: string
 }
 
 export function EmptyState({
   title = 'No Exact matches',
   subtitle = 'Try changing or removing some of your filters',
   showReset,
+  actionLabel,
 }: EmptyStateProps) {
   const router = useRouter()
   return (
@@ -23,7 +25,7 @@ export function EmptyState({
         {showReset && (
           <Button
             outline
-            label="Remove  all filters"
+            label={actionLabel ? actionLabel : 'Remove  all filters'}
             onClick={() => router.push('/')}
           />
         )}

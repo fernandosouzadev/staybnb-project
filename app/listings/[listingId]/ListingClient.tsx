@@ -4,6 +4,7 @@ import { Container } from '@/app/components/Container'
 import { ListingHead } from '@/app/components/Listings/ListingHead'
 import { ListingInfo } from '@/app/components/Listings/ListingInfo'
 import { ListingReservation } from '@/app/components/Listings/ListingReservation'
+import { MessageModal } from '@/app/components/Modals/messageModal'
 import { categories } from '@/app/components/Navbar/Categories'
 import { useAppDispatch } from '@/app/redux/hooks'
 import { setStatusLoginModal } from '@/app/redux/loginModal/slice'
@@ -111,6 +112,7 @@ export function ListingClient({
 
   return (
     <Container>
+      <MessageModal disabledDates={disabledDates} listing={listing} />
       <div className="max-w-screen-lg mx-auto">
         <div className="flex flex-col gap-6 my-5">
           <ListingHead

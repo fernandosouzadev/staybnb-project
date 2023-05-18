@@ -5,6 +5,9 @@ import loginModalReducer from './loginModal/slice'
 import currentUserReducer from './currentUser/slice'
 import rentModalReducer from './rentModal/slice'
 import searchModalReducer from './searchModal/slice'
+import chatInfoSideBarReducer from './chatInfoSideBar/slice'
+import messageModalReducer from './messageModal/slice'
+import messageListMobileReducer from './messageListMobile/slice'
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +16,9 @@ export const store = configureStore({
     currentUserReducer,
     rentModalReducer,
     searchModalReducer,
+    chatInfoSideBarReducer,
+    messageModalReducer,
+    messageListMobileReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: [logger],

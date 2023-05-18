@@ -81,6 +81,10 @@ export function UserMenu() {
               {currentUser ? (
                 <>
                   <MenuItem
+                    label="Messages"
+                    onClick={() => router.push('/guest/inbox')}
+                  />
+                  <MenuItem
                     label="My trips"
                     onClick={() => router.push('/trips')}
                   />
