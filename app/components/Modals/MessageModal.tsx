@@ -49,7 +49,7 @@ export function MessageModal({ disabledDates, listing }: MessageModalProps) {
 
   const actionLabel = useMemo(() => {
     if (step === STEPS.MESSAGE) {
-      return 'Sende Messege'
+      return 'Send Messege'
     }
     return 'Next'
   }, [step])
@@ -132,13 +132,12 @@ export function MessageModal({ disabledDates, listing }: MessageModalProps) {
     <Modal
       isOpen={isOpen}
       onClose={() => dispatch(setStatusMessageModal(false))}
-      title="Filters"
+      title="Message the Host"
       actionlabel={actionLabel}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={onBack}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
-      disabled={message === '' && isLoading}
     />
   )
 }
