@@ -56,7 +56,7 @@ export function InfoChat({ listing }: InfoChatProps) {
         <hr />
         <Button
           label="Reservation"
-          onClick={() => router.push(`/listing/${listing?.id}`)}
+          onClick={() => router.push(`/listings/${listing?.id}`)}
           outline
         />
       </div>
