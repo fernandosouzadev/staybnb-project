@@ -21,10 +21,18 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   favoriteIds String[] @db.ObjectId
-
+  
+  messages Message[]
   accounts Account[]
   listings Listing[]
   reservations Reservation[]
+
+  seenMessageIds String[] @db.ObjectId
+  seenMessages Message[] @relation("Seen", fields: [seenMessageIds], references: [id])
+
+  conversationIds String[] @db.ObjectId
+  conversations Conversation[] @relation(fields: [conversationIds], references: [id])
+  
 }
 
 model Account {
@@ -61,6 +69,7 @@ model Listing {
 
     user User @relation(fields: [userId], references: [id], onDelete:Cascade)
     reservations Reservation[]
+    conversation Conversation[]
 }
 
 model Reservation {
@@ -74,4 +83,38 @@ model Reservation {
 
     user User @relation(fields: [userId], references: [id], onDelete:Cascade)
     listing Listing @relation(fields: [listingId], references: [id], onDelete:Cascade)
+}
+
+
+model Conversation {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt       DateTime @default(now())
+  name String?
+  lastMessageAt DateTime @default(now())
+  messagesIds String[] @db.ObjectId
+  userIds String[] @db.ObjectId
+  listingId String @db.ObjectId
+  startDate DateTime
+  endDate DateTime
+  
+  messages Message[]
+  users User[] @relation(fields: [userIds], references: [id])
+  listing Listing @relation(fields: [listingId], references: [id])
+
+}
+
+model Message {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  body String?
+  image String?
+  createdAt DateTime @default(now())
+
+  seenIds String[] @db.ObjectId
+  seen User[] @relation("Seen", fields: [seenIds], references: [id])
+
+  conversationId String @db.ObjectId
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  
+  senderId String @db.ObjectId
+  sender User @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
