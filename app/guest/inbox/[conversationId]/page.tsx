@@ -23,7 +23,7 @@ export default async function ConversatioPage({ params }: { params: IParams }) {
         tabIndex={2}
       >
         <div className="border-b border-rose-50 flex flex-row justify-between items-center min-h-[80px] px-5">
-          {!isEmpty && <HeaderChat name={conversation.name} />}
+          {!isEmpty && <HeaderChat conversation={conversation} />}
         </div>
         <div
           className="flex flex-col justify-between items-center "
