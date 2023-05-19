@@ -71,6 +71,7 @@ export function ListingClient({
         listingId: listing.id,
       })
       .then(() => {
+        router.refresh()
         toast.success('Listing reserved!')
         setDateRange(initialDateRange)
         router.push('/trips')
