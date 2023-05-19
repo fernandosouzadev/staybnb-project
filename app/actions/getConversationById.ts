@@ -5,6 +5,10 @@ export default async function getConversationById(conversationId: string) {
   try {
     const currentUser = await getCurrentUser()
 
+    if (!currentUser?.id) {
+      return null
+    }
+
     if (!currentUser?.email) {
       return null
     }
@@ -19,7 +23,13 @@ export default async function getConversationById(conversationId: string) {
       },
     })
 
-    return conversation
+    const isPermission = conversation?.users.some(
+      (user) => user.id === currentUser.id,
+    )
+
+    if (isPermission) {
+      return conversation
+    }
   } catch (error: any) {
     console.log(error, 'SERVER_ERROR')
     return null
