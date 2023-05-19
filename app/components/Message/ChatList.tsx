@@ -13,6 +13,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { IoFilterSharp } from 'react-icons/io5'
+import { EmptyState } from '../EmptyState'
 import { ChatCard } from './ChatCard'
 
 interface ChatListProps {
@@ -95,15 +96,26 @@ export function ChatList({ initalConversation }: ChatListProps) {
         />
       </div>
       <div className="px-5 flex flex-col gap-5">
-        {items
-          .sort(
-            (a, b) =>
-              new Date(b.messages[b.messages.length - 1].createdAt).getTime() -
-              new Date(a.messages[a.messages.length - 1].createdAt).getTime(),
-          )
-          .map((conversation) => (
-            <ChatCard key={conversation.id} data={conversation} />
-          ))}
+        {items[0] ? (
+          items
+            .sort(
+              (a, b) =>
+                new Date(
+                  b.messages[b.messages.length - 1].createdAt,
+                ).getTime() -
+                new Date(a.messages[a.messages.length - 1].createdAt).getTime(),
+            )
+            .map((conversation) => (
+              <ChatCard key={conversation.id} data={conversation} />
+            ))
+        ) : (
+          <EmptyState
+            title="You have no unread messages"
+            subtitle="When you book a trip or experience, messages from your host will show up here."
+            actionLabel="Explore Airbnb"
+            showReset
+          />
+        )}
       </div>
     </div>
   )

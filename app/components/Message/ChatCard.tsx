@@ -83,10 +83,10 @@ export function ChatCard({ data }: ChatProps) {
       }`}
       onClick={!isMobile ? handleClickMobile : handleClick}
     >
-      <Avatar src={otherUser.image} width={50} height={50} />
+      <Avatar src={otherUser?.image} width={50} height={50} />
 
       <div className="flex flex-col gap-2">
-        <div className="font-light capitalize">{otherUser.name}</div>
+        <div className="font-light capitalize">{otherUser?.name}</div>
         <div
           className="font-light overflow-ellipsis overflow-hidden"
           style={{

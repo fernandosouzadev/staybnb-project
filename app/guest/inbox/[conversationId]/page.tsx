@@ -32,9 +32,11 @@ export default async function ConversatioPage({ params }: { params: IParams }) {
           <div className="w-full flex flex-col justify-between items-center overflow-y-auto">
             <MessagesList initialMessages={initialMessages} />
           </div>
-          <div className="w-[60%]">
-            <MessageInput conversationId={params?.conversationId as string} />
-          </div>
+          {conversation && (
+            <div className="w-[60%]">
+              <MessageInput conversationId={params?.conversationId as string} />
+            </div>
+          )}
         </div>
       </div>
       <InfoChat listing={conversation?.listing} />
