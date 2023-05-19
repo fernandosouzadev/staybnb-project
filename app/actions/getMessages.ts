@@ -14,7 +14,7 @@ export default async function getMessages(conversationId: string) {
         conversationId: conversationId,
         conversation: {
           users: {
-            every: {
+            some: {
               id: currentUser?.id,
             },
           },
