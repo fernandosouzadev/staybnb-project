@@ -11,5 +11,12 @@ export default function ErrorPage({ error }: ErrorPageProps) {
   useEffect(() => {
     console.error(error)
   }, [error])
-  return <EmptyState title="Uh Oh" subtitle="Somenthing went wrong!" />
+  return (
+    <EmptyState
+      title="Uh Oh"
+      subtitle="Somenthing went wrong!"
+      showReset
+      actionLabel="Back to home"
+    />
+  )
 }
