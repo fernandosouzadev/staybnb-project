@@ -57,7 +57,7 @@ export async function POST(request: Request) {
       },
     })
 
-    triggerChunked(conversationId, 'messages:new', newMessage)
+    await triggerChunked(conversationId, 'messages:new', newMessage)
 
     const lastMessage =
       updatedConversation.messages[updatedConversation.messages.length - 1]

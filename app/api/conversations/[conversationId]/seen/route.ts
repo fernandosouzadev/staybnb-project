@@ -61,7 +61,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
       },
     })
 
-    triggerChunked(currentUser.email!, 'conversation:update', {
+    await triggerChunked(currentUser.email!, 'conversation:update', {
       id: conversationId,
       messages: [updatedMessage],
     })
