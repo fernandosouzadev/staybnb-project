@@ -74,7 +74,7 @@ export function ChatCard({ data, notification }: ChatProps) {
 
   useEffect(() => {
     if (
-      (conversationId !== data.id || !conversationId) &&
+      conversationId !== data.id &&
       lastMessage.senderId !== currentUser?.id &&
       !hasSeen
     ) {
