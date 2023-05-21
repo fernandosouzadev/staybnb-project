@@ -28,6 +28,7 @@ export default async function getConversations() {
         messages: {
           include: {
             sender: true,
+            seen: true,
           },
         },
       },

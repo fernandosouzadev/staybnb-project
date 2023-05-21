@@ -22,6 +22,7 @@ export default async function getMessages(conversationId: string) {
       },
       include: {
         sender: true,
+        seen: true,
       },
       orderBy: {
         createdAt: 'asc',

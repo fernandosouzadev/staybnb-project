@@ -1,7 +1,6 @@
 import getConversations from '@/app/actions/getConversations'
 import { ChatList } from '@/app/components/Message/ChatList'
 import { ContainerChat } from '@/app/components/Message/ContainerChat'
-import { InfoChat } from '@/app/components/Message/InfoChat'
 import '@/app/globals.css'
 
 export const metadata = {

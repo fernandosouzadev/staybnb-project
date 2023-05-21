@@ -12,6 +12,7 @@ interface MessageBoxProps {
 
 export function MessageBox({ data }: MessageBoxProps) {
   const dateMessage = format(new Date(data.createdAt), 'p')
+
   return (
     <div className="rounded-md px-3 py-5 flex flex-row items-start gap-3 hover:bg-neutral-50 focus:bg-neutral-50">
       <Avatar src={data.sender.image} width={50} height={50} />

@@ -1,8 +1,7 @@
 'use client'
 
 import axios from 'axios'
-import { useRouter } from 'next/navigation'
-import { useCallback, useState } from 'react'
+
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { BsFillArrowUpCircleFill } from 'react-icons/bs'
 
@@ -11,8 +10,6 @@ interface MessageInputProps {
 }
 
 export function MessageInput({ conversationId }: MessageInputProps) {
-  const [isLoading, setIsLoading] = useState(false)
-
   const {
     register,
     handleSubmit,

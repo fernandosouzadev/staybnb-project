@@ -13,6 +13,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { MessageBox } from '../Message/MessageBox'
 import { useRouter } from 'next/navigation'
 import { MessageInput } from '../Inputs/MessageInput'
+import { bindWithChunking } from '@/app/actions/bindWithChunking'
 
 interface ChatModalProps {
   initialMessages: (Message & {
@@ -46,7 +47,7 @@ export function ChatModal({ initialMessages, name }: ChatModalProps) {
   }, [conversationId])
 
   useEffect(() => {
-    pusherClient.subscribe(conversationId)
+    const channel = pusherClient.subscribe(conversationId)
     bottomRef?.current?.scrollIntoView()
 
     const messageHandler = (message: FullMessageType) => {
@@ -75,13 +76,13 @@ export function ChatModal({ initialMessages, name }: ChatModalProps) {
       bottomRef?.current?.scrollIntoView()
     }
 
-    pusherClient.bind('messages:new', messageHandler)
-    pusherClient.bind('message:update', updateMessageHandler)
+    bindWithChunking(channel, 'messages:new', messageHandler)
+    bindWithChunking(channel, 'message:update', updateMessageHandler)
 
     return () => {
       pusherClient.unsubscribe(conversationId)
-      pusherClient.unbind('messages:new', messageHandler)
-      pusherClient.unbind('message:update', updateMessageHandler)
+      pusherClient.unbind('chunked-messages:new', messageHandler)
+      pusherClient.unbind('chunked-message:update', updateMessageHandler)
     }
   }, [conversationId])
 

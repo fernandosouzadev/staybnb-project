@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 
 import getCurrentUser from '@/app/actions/getCurrentUser'
-import { pusherServer } from '@/app/libs/pusher'
 import prisma from '@/app/libs/prismadb'
+import { triggerChunked } from '@/app/actions/triggerChunked'
 
 export async function POST(request: Request) {
   try {
@@ -57,13 +57,13 @@ export async function POST(request: Request) {
       },
     })
 
-    await pusherServer.trigger(conversationId, 'messages:new', newMessage)
+    triggerChunked(conversationId, 'messages:new', newMessage)
 
     const lastMessage =
       updatedConversation.messages[updatedConversation.messages.length - 1]
 
     updatedConversation.users.map((user) => {
-      pusherServer.trigger(user.email!, 'conversation:update', {
+      triggerChunked(user.email!, 'conversation:update', {
         id: conversationId,
         messages: [lastMessage],
       })

@@ -45,6 +45,7 @@ type FullConversationType = Conversation & {
 
 export function ChatList({ initalConversation }: ChatListProps) {
   const [items, setItems] = useState(initalConversation)
+  console.log()
   const router = useRouter()
   const { conversationId } = useConversation()
   const session = useSession()
