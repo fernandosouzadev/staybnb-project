@@ -2,14 +2,14 @@
     <img alt="Airbnb clone" title="Airbnb clone" src="https://new-airbnb-clone.vercel.app/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdqpsm5wkq%2Fimage%2Fupload%2Fv1684287066%2Ftoeszwz2u08twejkappq.jpg&w=1920&q=100" />
 </h1>
 
-
-
 ## Airbnb Clone Project
+
 This project is a clone of the popular Airbnb website. It aims to recreate the main features and user interface of Airbnb using modern web technologies.
 
-Access to project: https://new-airbnb-clone.vercel.app/
+Access to project: https://staybnb-project.vercel.app/
 
 ## Technologies Used
+
 - Next.js
 - React
 - Tailwind CSS
@@ -17,8 +17,10 @@ Access to project: https://new-airbnb-clone.vercel.app/
 - MongoDB
 - NextAuth
 - Redux
+- Pusher
 
 ## Project Overview
+
 The Airbnb clone project is built using Next.js, React, Tailwind CSS, Prisma, MongoDB, NextAuth, and Redux. It focuses on replicating the core functionalities and user experience of the original Airbnb website.
 
 Some of the features implemented in this clone project include:
