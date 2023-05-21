@@ -49,7 +49,6 @@ export function ChatList({ initalConversation }: ChatListProps) {
   const router = useRouter()
   const { conversationId } = useConversation()
   const session = useSession()
-  const audioRef = useRef<HTMLAudioElement>(null)
 
   const pusherKey = useMemo(() => {
     return session.data?.user?.email
@@ -91,12 +90,25 @@ export function ChatList({ initalConversation }: ChatListProps) {
     bindWithChunking(channel, 'conversation:new', newHandler)
   }, [conversationId, pusherKey, router])
 
+  const handleNotification = () => {
+    if (Notification.permission === 'granted') {
+      const audio = new Audio('/sound/notification.mp3')
+      audio.play()
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          const audio = new Audio('/sound/notification.mp3')
+          audio.play()
+        }
+      })
+    }
+  }
+
   return (
     <div
       className="mt-[2px] border-r border-t border-rose-50 bg-white focus:border-black"
       tabIndex={1}
     >
-      <audio ref={audioRef} className="hidden" src="/sound/notification.mp3" />
       <div className="border-b border-rose-50 flex flex-row justify-between items-center min-h-[80px] px-5">
         <div className="text-lg font-bold">Messages</div>
         <IoFilterSharp
@@ -120,7 +132,7 @@ export function ChatList({ initalConversation }: ChatListProps) {
               <ChatCard
                 key={conversation.id}
                 data={conversation}
-                notification={audioRef}
+                notification={handleNotification}
               />
             ))
         ) : (

@@ -15,7 +15,7 @@ import {
 import { format } from 'date-fns'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { RefObject, useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { Avatar } from '../Avatar'
 
 interface ChatProps {
@@ -29,7 +29,7 @@ interface ChatProps {
     })[]
     users: User[]
   }
-  notification: RefObject<HTMLAudioElement>
+  notification: () => void
 }
 
 export function ChatCard({ data, notification }: ChatProps) {
@@ -72,16 +72,6 @@ export function ChatCard({ data, notification }: ChatProps) {
     return seenArray.filter((user) => user.email === userEmail).length !== 0
   }, [userEmail, lastMessage])
 
-  useEffect(() => {
-    if (
-      conversationId !== data.id &&
-      lastMessage.senderId !== currentUser?.id &&
-      !hasSeen
-    ) {
-      notification.current?.play()
-    }
-  }, [conversationId, currentUser, data, hasSeen, lastMessage, notification])
-
   const lastMessageText = useMemo(() => {
     if (lastMessage?.body) {
       return lastMessage?.body
@@ -111,6 +101,12 @@ export function ChatCard({ data, notification }: ChatProps) {
         reservation.listingId === data.listingId,
     )
   }, [data])
+
+  useEffect(() => {
+    if (!hasSeen && conversationId !== data.id) {
+      notification()
+    }
+  }, [conversationId, data.id, hasSeen, notification])
 
   return (
     <a
