@@ -1,5 +1,7 @@
 'use client'
 
+import { bindWithChunking } from '@/app/actions/bindWithChunking'
+import useConversation from '@/app/hooks/useConversation'
 import { pusherClient } from '@/app/libs/pusher'
 import {
   Conversation,
@@ -8,10 +10,11 @@ import {
   Reservation,
   User,
 } from '@prisma/client'
+import axios from 'axios'
 import { find } from 'lodash'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { IoFilterSharp } from 'react-icons/io5'
 import { EmptyState } from '../EmptyState'
 import { ChatCard } from './ChatCard'
@@ -23,6 +26,7 @@ interface ChatListProps {
     }
     messages: (Message & {
       sender: User
+      seen: User[]
     })[]
     users: User[]
   })[]
@@ -34,6 +38,7 @@ type FullConversationType = Conversation & {
   }
   messages: (Message & {
     sender: User
+    seen: User[]
   })[]
   users: User[]
 }
@@ -41,7 +46,9 @@ type FullConversationType = Conversation & {
 export function ChatList({ initalConversation }: ChatListProps) {
   const [items, setItems] = useState(initalConversation)
   const router = useRouter()
+  const { conversationId } = useConversation()
   const session = useSession()
+  const audioRef = useRef<HTMLAudioElement>(null)
 
   const pusherKey = useMemo(() => {
     return session.data?.user?.email
@@ -52,7 +59,7 @@ export function ChatList({ initalConversation }: ChatListProps) {
       return
     }
 
-    pusherClient.subscribe(pusherKey)
+    const channel = pusherClient.subscribe(pusherKey)
 
     const updateHandler = (conversation: FullConversationType) => {
       setItems((current) =>
@@ -79,15 +86,16 @@ export function ChatList({ initalConversation }: ChatListProps) {
       })
     }
 
-    pusherClient.bind('conversation:update', updateHandler)
-    pusherClient.bind('conversation:new', newHandler)
-  }, [pusherKey, router])
+    bindWithChunking(channel, 'conversation:update', updateHandler)
+    bindWithChunking(channel, 'conversation:new', newHandler)
+  }, [conversationId, pusherKey, router])
 
   return (
     <div
       className="mt-[2px] border-r border-t border-rose-50 bg-white focus:border-black"
       tabIndex={1}
     >
+      <audio ref={audioRef} className="hidden" src="/sound/notification.mp3" />
       <div className="border-b border-rose-50 flex flex-row justify-between items-center min-h-[80px] px-5">
         <div className="text-lg font-bold">Messages</div>
         <IoFilterSharp
@@ -101,12 +109,18 @@ export function ChatList({ initalConversation }: ChatListProps) {
             .sort(
               (a, b) =>
                 new Date(
-                  b.messages[b.messages.length - 1].createdAt,
+                  b?.messages[b?.messages?.length - 1]?.createdAt,
                 ).getTime() -
-                new Date(a.messages[a.messages.length - 1].createdAt).getTime(),
+                new Date(
+                  a?.messages[a?.messages?.length - 1]?.createdAt,
+                ).getTime(),
             )
             .map((conversation) => (
-              <ChatCard key={conversation.id} data={conversation} />
+              <ChatCard
+                key={conversation.id}
+                data={conversation}
+                notification={audioRef}
+              />
             ))
         ) : (
           <EmptyState

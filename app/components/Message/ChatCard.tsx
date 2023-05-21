@@ -3,7 +3,7 @@
 import useConversation from '@/app/hooks/useConversation'
 import useMediaQuery from '@/app/hooks/useMediaQuery'
 import useOtherUser from '@/app/hooks/useOtherUser'
-import { useAppDispatch } from '@/app/redux/hooks'
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
 import { setStatusMessageListMobile } from '@/app/redux/messageListMobile/slice'
 import {
   Conversation,
@@ -13,8 +13,9 @@ import {
   User,
 } from '@prisma/client'
 import { format } from 'date-fns'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useCallback, useMemo } from 'react'
+import { RefObject, useCallback, useEffect, useMemo } from 'react'
 import { Avatar } from '../Avatar'
 
 interface ChatProps {
@@ -24,14 +25,19 @@ interface ChatProps {
     }
     messages: (Message & {
       sender: User
+      seen: User[]
     })[]
     users: User[]
   }
+  notification: RefObject<HTMLAudioElement>
 }
 
-export function ChatCard({ data }: ChatProps) {
+export function ChatCard({ data, notification }: ChatProps) {
   const router = useRouter()
+  const session = useSession()
   const { conversationId } = useConversation()
+  const currentUser = useAppSelector((state) => state.currentUserReducer.user)
+
   const isSelected = useMemo(() => {
     if (conversationId === data.id) {
       return true
@@ -40,11 +46,41 @@ export function ChatCard({ data }: ChatProps) {
   }, [conversationId, data])
 
   const otherUser = useOtherUser(data)
+
   const lastMessage = useMemo(() => {
     const messages = data.messages || []
 
     return messages[messages.length - 1]
   }, [data.messages])
+
+  const userEmail = useMemo(
+    () => session.data?.user?.email,
+    [session.data?.user?.email],
+  )
+
+  const hasSeen = useMemo(() => {
+    if (!lastMessage) {
+      return false
+    }
+
+    const seenArray = lastMessage.seen || []
+
+    if (!userEmail) {
+      return false
+    }
+
+    return seenArray.filter((user) => user.email === userEmail).length !== 0
+  }, [userEmail, lastMessage])
+
+  useEffect(() => {
+    if (
+      (conversationId !== data.id || !conversationId) &&
+      lastMessage.senderId !== currentUser?.id &&
+      !hasSeen
+    ) {
+      notification.current?.play()
+    }
+  }, [conversationId, currentUser, data, hasSeen, lastMessage, notification])
 
   const lastMessageText = useMemo(() => {
     if (lastMessage?.body) {
@@ -64,8 +100,8 @@ export function ChatCard({ data }: ChatProps) {
     dispatch(setStatusMessageListMobile(true))
   }, [data, dispatch, router])
 
-  const formattedStartDate = format(data.startDate, 'MMM d')
-  const formattedEndDate = format(data.endDate, 'MMM d')
+  const formattedStartDate = data ? format(data?.startDate, 'MMM d') : ''
+  const formattedEndDate = data ? format(data?.endDate, 'MMM d') : ''
 
   const isValiable = useMemo(() => {
     return data.listing.reservations.every(
@@ -78,7 +114,7 @@ export function ChatCard({ data }: ChatProps) {
 
   return (
     <a
-      className={`cursor-pointer px-3 py-5 flex flex-row items-start gap-3 border-b border-neutral-200 ${
+      className={`relative cursor-pointer px-3 py-5 flex flex-row items-start gap-3 border-b border-neutral-200 ${
         isSelected && 'bg-neutral-50 rounded-md  border-0'
       }`}
       onClick={!isMobile ? handleClickMobile : handleClick}
@@ -88,7 +124,9 @@ export function ChatCard({ data }: ChatProps) {
       <div className="flex flex-col gap-2">
         <div className="font-light capitalize">{otherUser?.name}</div>
         <div
-          className="font-light overflow-ellipsis overflow-hidden"
+          className={`${
+            hasSeen ? 'font-light' : 'font-bold'
+          } overflow-ellipsis overflow-hidden`}
           style={{
             WebkitLineClamp: '2',
             display: '-webkit-box',
