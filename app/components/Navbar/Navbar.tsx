@@ -16,11 +16,15 @@ interface NavbarProps {
 export function Navbar({ user }: NavbarProps) {
   const dispatch = useAppDispatch()
   dispatch(
-    setCurrentUser({
-      ...user,
-      createdAt: user?.createdAt.getTime(),
-      updatedAt: user?.updatedAt.getTime(),
-    }),
+    setCurrentUser(
+      user
+        ? {
+            ...user,
+            createdAt: user?.createdAt.getTime(),
+            updatedAt: user?.updatedAt.getTime(),
+          }
+        : null,
+    ),
   )
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
