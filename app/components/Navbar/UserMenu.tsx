@@ -14,6 +14,7 @@ import { LoginModal } from "../Modals/LoginModal";
 import { RegisterModal } from "../Modals/RegisterModal";
 import { RentModal } from "../Modals/RentModal";
 import { MenuItem } from "./MenuItem";
+import { Novu } from "../InboxNotification";
 
 export function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -65,6 +66,8 @@ export function UserMenu() {
           >
             Post your home
           </div>
+          <Novu />
+
           <div
             onClick={toggleOpen}
             className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"

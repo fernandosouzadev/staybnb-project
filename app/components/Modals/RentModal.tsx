@@ -133,6 +133,7 @@ export function RentModal() {
                 selected={category === item.label}
                 label={item.label}
                 icon={item.icon}
+                disabled={isLoading}
               />
             </div>
           );

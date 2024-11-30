@@ -1,20 +1,21 @@
-import { NextResponse } from 'next/server'
+import { NextResponse } from "next/server";
 
-import getCurrentUser from '@/app/actions/getCurrentUser'
-import prisma from '@/app/libs/prismadb'
-import { triggerChunked } from '@/app/actions/triggerChunked'
+import getCurrentUser from "@/app/actions/getCurrentUser";
+import prisma from "@/app/libs/prismadb";
+import { triggerChunked } from "@/app/actions/triggerChunked";
+import { triggerNovu } from "@/app/actions/triggerNovu";
 
 interface IParams {
-  conversationId?: string
+  conversationId?: string;
 }
 
 export async function POST(request: Request, { params }: { params: IParams }) {
   try {
-    const currentUser = await getCurrentUser()
-    const { conversationId } = params
+    const currentUser = await getCurrentUser();
+    const { conversationId } = params;
 
     if (!currentUser?.id || !currentUser?.email) {
-      return new NextResponse('Unauthorized', { status: 401 })
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
     // Find existing conversation
@@ -30,17 +31,25 @@ export async function POST(request: Request, { params }: { params: IParams }) {
         },
         users: true,
       },
-    })
+    });
+    const userAnotherId = conversation?.users.find(
+      (user) => user.id !== currentUser.id
+    );
+    const userAnother = await prisma.user.findUnique({
+      where: {
+        id: userAnotherId?.id,
+      },
+    });
 
     if (!conversation) {
-      return new NextResponse('Invalid ID', { status: 400 })
+      return new NextResponse("Invalid ID", { status: 400 });
     }
 
     // Find last message
-    const lastMessage = conversation.messages[conversation.messages.length - 1]
+    const lastMessage = conversation.messages[conversation.messages.length - 1];
 
     if (!lastMessage) {
-      return NextResponse.json(conversation)
+      return NextResponse.json(conversation);
     }
 
     // Update seen of last message
@@ -59,22 +68,33 @@ export async function POST(request: Request, { params }: { params: IParams }) {
           },
         },
       },
-    })
+    });
 
-    await triggerChunked(currentUser.email!, 'conversation:update', {
+    await triggerChunked(currentUser.email!, "conversation:update", {
       id: conversationId,
       messages: [updatedMessage],
-    })
+    });
+
+    triggerNovu({
+      email: userAnother?.email!,
+      payload: {
+        userName: currentUser.name!,
+        userAvatar: currentUser.image!,
+        userComment: updatedMessage.body!,
+        replyUrl: `http://localhost:3000/conversations/${conversationId}`,
+      },
+      subscriberId: userAnother?.email!,
+    });
 
     if (lastMessage.seenIds.indexOf(currentUser.id) !== -1) {
-      return NextResponse.json(conversation)
+      return NextResponse.json(conversation);
     }
 
-    await triggerChunked(conversationId!, 'message:update', updatedMessage)
+    await triggerChunked(conversationId!, "message:update", updatedMessage);
 
-    return new NextResponse('Success')
+    return new NextResponse("Success");
   } catch (error) {
-    console.log(error, 'ERROR_MESSAGES_SEEN')
-    return new NextResponse('Error', { status: 500 })
+    console.log(error, "ERROR_MESSAGES_SEEN");
+    return new NextResponse("Error", { status: 500 });
   }
 }
