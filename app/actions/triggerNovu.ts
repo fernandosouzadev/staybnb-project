@@ -1,6 +1,6 @@
 import { Novu } from "@novu/node";
 
-const novu = new Novu("c0154a5916cb538df4bf6de3f7f6a52b");
+const novu = new Novu("8b1d82ca48ef5f1cb16aa6446d118cac");
 
 type triggerNovuProps = {
   subscriberId: string;

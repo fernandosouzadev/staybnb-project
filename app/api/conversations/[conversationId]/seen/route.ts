@@ -81,7 +81,6 @@ export async function POST(request: Request, { params }: { params: IParams }) {
     });
 
     triggerNovu({
-      email: currentUser?.email!,
       payload: {
         userName: currentUser.name!,
         userAvatar: currentUser.image
@@ -93,6 +92,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
         )}/conversations/${conversationId}`,
         fileName: listing?.title,
       },
+      email: userAnother?.email!,
       subscriberId: userAnother?.email!,
     });
 
