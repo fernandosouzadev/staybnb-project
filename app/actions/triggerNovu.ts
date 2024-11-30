@@ -10,6 +10,7 @@ type triggerNovuProps = {
     userAvatar: string;
     userComment: string;
     replyUrl: string;
+    fileName?: string;
   };
 };
 
@@ -18,7 +19,7 @@ export function triggerNovu({
   payload,
   subscriberId,
 }: triggerNovuProps) {
-  novu.trigger("chat-message", {
+  novu.trigger("demo-comment-on-task", {
     to: {
       subscriberId: subscriberId,
       email: email,

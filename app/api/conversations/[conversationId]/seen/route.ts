@@ -40,6 +40,11 @@ export async function POST(request: Request, { params }: { params: IParams }) {
         id: userAnotherId?.id,
       },
     });
+    const listing = await prisma.listing.findUnique({
+      where: {
+        id: conversation?.listingId,
+      },
+    });
 
     if (!conversation) {
       return new NextResponse("Invalid ID", { status: 400 });
@@ -82,6 +87,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
         userAvatar: currentUser.image!,
         userComment: updatedMessage.body!,
         replyUrl: `http://localhost:3000/conversations/${conversationId}`,
+        fileName: listing?.title,
       },
       subscriberId: userAnother?.email!,
     });
