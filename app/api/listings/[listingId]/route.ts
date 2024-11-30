@@ -17,7 +17,7 @@ export async function DELETE(
     return NextResponse.error();
   }
 
-  if (listingId || typeof listingId !== "string") {
+  if (!listingId || typeof listingId !== "string") {
     throw new Error("Invalid ID");
   }
 
