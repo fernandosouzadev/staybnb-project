@@ -81,7 +81,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
     });
 
     triggerNovu({
-      email: userAnother?.email!,
+      email: currentUser?.email!,
       payload: {
         userName: currentUser.name!,
         userAvatar: currentUser.image
