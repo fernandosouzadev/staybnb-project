@@ -1,16 +1,17 @@
-'use client'
+"use client";
 
-import { User } from '@prisma/client'
-import Image from 'next/image'
-import { toast } from 'react-hot-toast'
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
-import useFavorite from '../hooks/useFavorite'
+import { User } from "@prisma/client";
+import Image from "next/image";
+import { toast } from "react-hot-toast";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import useFavorite from "../hooks/useFavorite";
+import { useRouter } from "next/navigation";
 
 interface HeartButtonProps {
-  currentUser: User | null | undefined
-  listingId: string
-  listingImage: string
-  listingTitle: string
+  currentUser: User | null | undefined;
+  listingId: string;
+  listingImage: string;
+  listingTitle: string;
 }
 
 export function HeartButton({
@@ -19,13 +20,15 @@ export function HeartButton({
   listingTitle,
   listingImage,
 }: HeartButtonProps) {
+  const router = useRouter();
   function toastCustom() {
     toast.custom(
       (t) => (
         <div
           className={`${
-            t.visible ? 'animate-enter' : 'animate-leave'
-          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+            t.visible ? "animate-enter" : "animate-leave"
+          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5 cursor-pointer`}
+          onClick={() => router.push("/favorites")}
         >
           <div className="flex-1 w-0 p-4">
             <div className="flex justify-center items-center">
@@ -42,8 +45,8 @@ export function HeartButton({
                 <p className="text-sm font-medium text-gray-900">
                   <strong>{listingTitle}</strong>
                   {!hasFavorited
-                    ? ' has been saved to favorites'
-                    : ' has been removed from favorites'}
+                    ? " has been saved to favorites"
+                    : " has been removed from favorites"}
                 </p>
               </div>
             </div>
@@ -58,19 +61,19 @@ export function HeartButton({
           </div>
         </div>
       ),
-      { position: 'bottom-left' },
-    )
+      { position: "bottom-left" }
+    );
   }
   const { hasFavorited, toggleFavorite } = useFavorite({
     listingId,
     currentUser,
     toastCustom,
-  })
+  });
 
   return (
     <div
       onClick={toggleFavorite}
-      className="relative hover:opacity-80 transition cursor-pointer"
+      className={"relative hover:opacity-80 transition cursor-pointer"}
     >
       <AiOutlineHeart
         size={28}
@@ -78,8 +81,8 @@ export function HeartButton({
       />
       <AiFillHeart
         size={24}
-        className={hasFavorited ? 'fill-rose-500' : 'fill-neutral-500/70'}
+        className={hasFavorited ? "fill-rose-600" : "transparent"}
       />
     </div>
-  )
+  );
 }
