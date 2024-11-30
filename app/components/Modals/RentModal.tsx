@@ -133,7 +133,6 @@ export function RentModal() {
                 selected={category === item.label}
                 label={item.label}
                 icon={item.icon}
-                disabled={isLoading}
               />
             </div>
           );
@@ -254,6 +253,7 @@ export function RentModal() {
       isOpen={isOpen}
       onClose={() => dispatch(setStatusRentModal(false))}
       onSubmit={handleSubmit(onSubmit)}
+      disabled={isLoading}
       actionlabel={actionLabel}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
