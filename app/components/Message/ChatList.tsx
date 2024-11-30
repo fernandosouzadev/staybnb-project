@@ -1,65 +1,65 @@
-'use client'
+"use client";
 
-import { bindWithChunking } from '@/app/actions/bindWithChunking'
-import useConversation from '@/app/hooks/useConversation'
-import { pusherClient } from '@/app/libs/pusher'
+import { bindWithChunking } from "@/app/actions/bindWithChunking";
+import useConversation from "@/app/hooks/useConversation";
+import { pusherClient } from "@/app/libs/pusher";
 import {
   Conversation,
   Listing,
   Message,
   Reservation,
   User,
-} from '@prisma/client'
-import axios from 'axios'
-import { find } from 'lodash'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { IoFilterSharp } from 'react-icons/io5'
-import { EmptyState } from '../EmptyState'
-import { ChatCard } from './ChatCard'
+} from "@prisma/client";
+import axios from "axios";
+import { find } from "lodash";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { IoFilterSharp } from "react-icons/io5";
+import { EmptyState } from "../EmptyState";
+import { ChatCard } from "./ChatCard";
 
 interface ChatListProps {
   initalConversation: (Conversation & {
     listing: Listing & {
-      reservations: Reservation[]
-    }
+      reservations: Reservation[];
+    };
     messages: (Message & {
-      sender: User
-      seen: User[]
-    })[]
-    users: User[]
-  })[]
+      sender: User;
+      seen: User[];
+    })[];
+    users: User[];
+  })[];
 }
 
 type FullConversationType = Conversation & {
   listing: Listing & {
-    reservations: Reservation[]
-  }
+    reservations: Reservation[];
+  };
   messages: (Message & {
-    sender: User
-    seen: User[]
-  })[]
-  users: User[]
-}
+    sender: User;
+    seen: User[];
+  })[];
+  users: User[];
+};
 
 export function ChatList({ initalConversation }: ChatListProps) {
-  const [items, setItems] = useState(initalConversation)
+  const [items, setItems] = useState(initalConversation);
 
-  const router = useRouter()
-  const { conversationId } = useConversation()
-  const session = useSession()
+  const router = useRouter();
+  const { conversationId } = useConversation();
+  const session = useSession();
 
   const pusherKey = useMemo(() => {
-    return session.data?.user?.email
-  }, [session.data?.user?.email])
+    return session.data?.user?.email;
+  }, [session.data?.user?.email]);
 
   useEffect(() => {
     if (!pusherKey) {
-      return
+      return;
     }
 
-    const channel = pusherClient.subscribe(pusherKey)
+    const channel = pusherClient.subscribe(pusherKey);
 
     const updateHandler = (conversation: FullConversationType) => {
       setItems((current) =>
@@ -68,41 +68,41 @@ export function ChatList({ initalConversation }: ChatListProps) {
             return {
               ...currentConversation,
               messages: conversation.messages,
-            }
+            };
           }
 
-          return currentConversation
-        }),
-      )
-    }
+          return currentConversation;
+        })
+      );
+    };
 
     const newHandler = (conversation: FullConversationType) => {
       setItems((current) => {
         if (find(current, { id: conversation.id })) {
-          return current
+          return current;
         }
 
-        return [conversation, ...current]
-      })
-    }
+        return [conversation, ...current];
+      });
+    };
 
-    bindWithChunking(channel, 'conversation:update', updateHandler)
-    bindWithChunking(channel, 'conversation:new', newHandler)
-  }, [conversationId, pusherKey, router])
+    bindWithChunking(channel, "conversation:update", updateHandler);
+    bindWithChunking(channel, "conversation:new", newHandler);
+  }, [conversationId, pusherKey, router]);
 
   const handleNotification = () => {
-    if (Notification.permission === 'granted') {
-      const audio = new Audio('/sound/notification.mp3')
-      audio.play()
-    } else if (Notification.permission !== 'denied') {
+    if (Notification.permission === "granted") {
+      const audio = new Audio("/sound/notification.mp3");
+      audio.play();
+    } else if (Notification.permission !== "denied") {
       Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-          const audio = new Audio('/sound/notification.mp3')
-          audio.play()
+        if (permission === "granted") {
+          const audio = new Audio("/sound/notification.mp3");
+          audio.play();
         }
-      })
+      });
     }
-  }
+  };
 
   return (
     <div
@@ -122,11 +122,11 @@ export function ChatList({ initalConversation }: ChatListProps) {
             .sort(
               (a, b) =>
                 new Date(
-                  b?.messages[b?.messages?.length - 1]?.createdAt,
+                  b?.messages[b?.messages?.length - 1]?.createdAt
                 ).getTime() -
                 new Date(
-                  a?.messages[a?.messages?.length - 1]?.createdAt,
-                ).getTime(),
+                  a?.messages[a?.messages?.length - 1]?.createdAt
+                ).getTime()
             )
             .map((conversation) => (
               <ChatCard
@@ -139,11 +139,11 @@ export function ChatList({ initalConversation }: ChatListProps) {
           <EmptyState
             title="You have no unread messages"
             subtitle="When you book a trip or experience, messages from your host will show up here."
-            actionLabel="Explore Airbnb"
+            actionLabel="Explore Staybnb"
             showReset
           />
         )}
       </div>
     </div>
-  )
+  );
 }

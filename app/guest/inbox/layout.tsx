@@ -1,27 +1,27 @@
-import getConversations from '@/app/actions/getConversations'
-import { ChatList } from '@/app/components/Message/ChatList'
-import { ContainerChat } from '@/app/components/Message/ContainerChat'
-import '@/app/globals.css'
+import getConversations from "@/app/actions/getConversations";
+import { ChatList } from "@/app/components/Message/ChatList";
+import { ContainerChat } from "@/app/components/Message/ContainerChat";
+import "@/app/globals.css";
 
 export const metadata = {
-  title: 'Airbnb - Discover Your Home Away from Home',
-  description: 'Airbnb clone - new concept',
+  title: "Staybnb - Feel at Home, Anywhere You Go",
+  description: "Staybnb - Vaction Rentals, Homes, Experiences & Places",
   icons: {
-    icon: '/images/favicon.png',
+    icon: "/images/favicon.png",
   },
-}
+};
 
 export default async function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  const conversations = await getConversations()
+  const conversations = await getConversations();
 
   return (
     <ContainerChat>
       <ChatList initalConversation={conversations} />
       {children}
     </ContainerChat>
-  )
+  );
 }

@@ -1,53 +1,53 @@
-'use client'
+"use client";
 
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
-import { setStatusLoginModal } from '@/app/redux/loginModal/slice'
-import { setStatusRegisterModal } from '@/app/redux/registerModal/slice'
-import { setStatusRentModal } from '@/app/redux/rentModal/slice'
-import { signOut } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import { useCallback, useRef, useState } from 'react'
-import { AiOutlineMenu } from 'react-icons/ai'
-import { useClickAway } from 'react-use'
-import { Avatar } from '../Avatar'
-import { LoginModal } from '../Modals/LoginModal'
-import { RegisterModal } from '../Modals/RegisterModal'
-import { RentModal } from '../Modals/RentModal'
-import { MenuItem } from './MenuItem'
+import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
+import { setStatusLoginModal } from "@/app/redux/loginModal/slice";
+import { setStatusRegisterModal } from "@/app/redux/registerModal/slice";
+import { setStatusRentModal } from "@/app/redux/rentModal/slice";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useCallback, useRef, useState } from "react";
+import { AiOutlineMenu } from "react-icons/ai";
+import { useClickAway } from "react-use";
+import { Avatar } from "../Avatar";
+import { LoginModal } from "../Modals/LoginModal";
+import { RegisterModal } from "../Modals/RegisterModal";
+import { RentModal } from "../Modals/RentModal";
+import { MenuItem } from "./MenuItem";
 
 export function UserMenu() {
-  const [isOpen, setIsOpen] = useState(false)
-  const userMenuRef = useRef(null)
-  const router = useRouter()
+  const [isOpen, setIsOpen] = useState(false);
+  const userMenuRef = useRef(null);
+  const router = useRouter();
 
   const toggleOpen = useCallback(() => {
-    setIsOpen((state) => !state)
-  }, [])
-  const dispatch = useAppDispatch()
-  const currentUser = useAppSelector((state) => state.currentUserReducer.user)
+    setIsOpen((state) => !state);
+  }, []);
+  const dispatch = useAppDispatch();
+  const currentUser = useAppSelector((state) => state.currentUserReducer.user);
 
   function handleOpenModalRegister() {
-    dispatch(setStatusRegisterModal(true))
-    setIsOpen(false)
+    dispatch(setStatusRegisterModal(true));
+    setIsOpen(false);
   }
 
   function handleOpenModalLogin() {
-    dispatch(setStatusLoginModal(true))
-    setIsOpen(false)
+    dispatch(setStatusLoginModal(true));
+    setIsOpen(false);
   }
 
   useClickAway(userMenuRef, () => {
     if (isOpen) {
-      setIsOpen(false)
+      setIsOpen(false);
     }
-  })
+  });
 
   const onRent = useCallback(() => {
     if (!currentUser) {
-      return dispatch(setStatusLoginModal(true))
+      return dispatch(setStatusLoginModal(true));
     }
-    dispatch(setStatusRentModal(true))
-  }, [currentUser, dispatch])
+    dispatch(setStatusRentModal(true));
+  }, [currentUser, dispatch]);
 
   return (
     <>
@@ -58,12 +58,12 @@ export function UserMenu() {
         <div className="flex flex-row items-center gap-3">
           <div
             onClick={() => {
-              setIsOpen(false)
-              onRent()
+              setIsOpen(false);
+              onRent();
             }}
             className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
           >
-            Airbnb your home
+            Post your home
           </div>
           <div
             onClick={toggleOpen}
@@ -82,25 +82,25 @@ export function UserMenu() {
                 <>
                   <MenuItem
                     label="Messages"
-                    onClick={() => router.push('/guest/inbox')}
+                    onClick={() => router.push("/guest/inbox")}
                   />
                   <MenuItem
                     label="My trips"
-                    onClick={() => router.push('/trips')}
+                    onClick={() => router.push("/trips")}
                   />
                   <MenuItem
                     label="My Favorites"
-                    onClick={() => router.push('/favorites')}
+                    onClick={() => router.push("/favorites")}
                   />
                   <MenuItem
                     label="My reservations"
-                    onClick={() => router.push('/reservations')}
+                    onClick={() => router.push("/reservations")}
                   />
                   <MenuItem
                     label="My properties"
-                    onClick={() => router.push('/properties')}
+                    onClick={() => router.push("/properties")}
                   />
-                  <MenuItem label="Airbnb my home" onClick={() => onRent()} />
+                  <MenuItem label="Staybnb my home" onClick={() => onRent()} />
                   <hr />
                   <MenuItem label="Logout" onClick={() => signOut()} />
                 </>
@@ -115,5 +115,5 @@ export function UserMenu() {
         )}
       </div>
     </>
-  )
+  );
 }

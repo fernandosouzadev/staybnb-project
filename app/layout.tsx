@@ -1,28 +1,28 @@
-import './globals.css'
-import { Nunito } from 'next/font/google'
-import { Navbar } from './components/Navbar/Navbar'
-import { ReduxProvider } from '@/app/providers/ReduxProvider'
-import { ToasterProvider } from './providers/ToasterProvider'
-import getCurrentUser from './actions/getCurrentUser'
-import { Footer } from './components/Footer/Footer'
-import ClientSessionProvider from './providers/ClientSessionProvider'
+import "./globals.css";
+import { Nunito } from "next/font/google";
+import { Navbar } from "./components/Navbar/Navbar";
+import { ReduxProvider } from "@/app/providers/ReduxProvider";
+import { ToasterProvider } from "./providers/ToasterProvider";
+import getCurrentUser from "./actions/getCurrentUser";
+import { Footer } from "./components/Footer/Footer";
+import ClientSessionProvider from "./providers/ClientSessionProvider";
 
-const font = Nunito({ subsets: ['latin'] })
+const font = Nunito({ subsets: ["latin"] });
 
 export const metadata = {
-  title: 'Airbnb - Discover Your Home Away from Home',
-  description: 'Airbnb clone - new concept',
+  title: "Staybnb - Feel at Home, Anywhere You Go",
+  description: "Staybnb vacation rentals, homes, experiences & places",
   icons: {
-    icon: '/images/favicon.png',
+    icon: "/images/favicon.png",
   },
-}
+};
 
 export default async function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  const user = await getCurrentUser()
+  const user = await getCurrentUser();
   return (
     <html lang="en">
       <body className={font.className}>
@@ -37,5 +37,5 @@ export default async function RootLayout({
         </ReduxProvider>
       </body>
     </html>
-  )
+  );
 }
