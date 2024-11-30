@@ -86,9 +86,9 @@ export async function POST(request: Request, { params }: { params: IParams }) {
         userName: currentUser.name!,
         userAvatar: currentUser.image
           ? currentUser.image
-          : `${request.headers.get("host")}/images/placeholder.png`,
+          : `https://${request.headers.get("host")}/images/placeholder.png`,
         userComment: updatedMessage.body!,
-        replyUrl: `${request.headers.get(
+        replyUrl: `https://${request.headers.get(
           "host"
         )}/conversations/${conversationId}`,
         fileName: listing?.title,
