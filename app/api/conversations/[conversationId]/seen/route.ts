@@ -84,9 +84,13 @@ export async function POST(request: Request, { params }: { params: IParams }) {
       email: userAnother?.email!,
       payload: {
         userName: currentUser.name!,
-        userAvatar: currentUser.image!,
+        userAvatar: currentUser.image
+          ? currentUser.image
+          : `${request.headers.get("host")}/images/placeholder.png`,
         userComment: updatedMessage.body!,
-        replyUrl: `http://localhost:3000/conversations/${conversationId}`,
+        replyUrl: `${request.headers.get(
+          "host"
+        )}/conversations/${conversationId}`,
         fileName: listing?.title,
       },
       subscriberId: userAnother?.email!,
