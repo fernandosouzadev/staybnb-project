@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@grafana/faro-web-sdk": "^1.15.0",
+    "@grafana/faro-web-tracing": "^1.15.0",
     "@next-auth/prisma-adapter": "^1.0.6",
     "@novu/node": "^2.0.4",
     "@novu/react": "^2.6.2",
