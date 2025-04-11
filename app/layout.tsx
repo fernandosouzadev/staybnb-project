@@ -5,8 +5,7 @@ import { ReduxProvider } from "@/app/providers/ReduxProvider";
 import { ToasterProvider } from "./providers/ToasterProvider";
 import getCurrentUser from "./actions/getCurrentUser";
 import ClientSessionProvider from "./providers/ClientSessionProvider";
-import { getWebInstrumentations, initializeFaro } from "@grafana/faro-web-sdk";
-import { TracingInstrumentation } from "@grafana/faro-web-tracing";
+import { FaroProvider } from "./providers/FaroProvider";
 
 const font = Nunito({ subsets: ["latin"] });
 
@@ -17,24 +16,6 @@ export const metadata = {
     icon: "/images/favicon.png",
   },
 };
-
-initializeFaro({
-  url:
-    process.env.NEXT_PUBLIC_FARO_URL || "https://faro.grafana.net/api/traces",
-  app: {
-    name: "staybnb",
-    version: "1.0.0",
-    environment: "production",
-  },
-
-  instrumentations: [
-    // Mandatory, omits default instrumentations otherwise.
-    ...getWebInstrumentations(),
-
-    // Tracing package to get end-to-end visibility for HTTP requests.
-    new TracingInstrumentation(),
-  ],
-});
 
 export default async function RootLayout({
   children,
@@ -47,6 +28,7 @@ export default async function RootLayout({
       <body className={font.className}>
         <ReduxProvider>
           <ToasterProvider />
+          <FaroProvider />
           <div className="flex flex-col min-h-screen">
             <ClientSessionProvider>
               <Navbar user={user} />
